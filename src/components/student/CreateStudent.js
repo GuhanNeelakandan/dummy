@@ -1,12 +1,15 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import  toast, { Toaster }  from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 function CreateStudent() {
+    const navigate = useNavigate()
     const[student,setStudent]=useState({
-        firstname:"",
-        lastname:"",
-        email:"",
-        password:""
+        name:"",
+        age:"",
+        roll:"",
+        place:""
     })
 
     const handleChange =(e)=>{
@@ -24,33 +27,36 @@ function CreateStudent() {
           },
    }
 
-    const handleSubmit =()=>{
-        if(student.firstname===""){
+    const handleSubmit =async()=>{
+        if(student.name===""){
             toast.error('Enter your FirstName',toastoption)
             return;
-        }else if(student.firstname.length<3){
+        }else if(student.name.length<3){
             toast.error('Enter Atleast 4 words',toastoption)
             return;
         }
-        if(student.lastname===""){
-            toast.error('Enter your lastname',toastoption)
-            return;
-        }else if(student.lastname.length<3){
-            toast.error('Enter Atleast 4 words',toastoption)
+        if(student.age===""){
+            toast.error('Enter your Age',toastoption)
             return;
         }
-        if(student.email===""){
-            toast.error('Enter your email',toastoption)
+        if(student.roll===""){
+            toast.error('Enter your roll',toastoption)
             return;
         }
-        if(student.password===""){
-            toast.error('Enter your password',toastoption)
-            return;
-        }else if(student.password.length<8){
-            toast.error('Enter 8 digit password',toastoption)
+        if(student.place===""){
+            toast.error('Enter your place',toastoption)
             return;
         }
         console.log(student)
+        const res =await axios.post('https://63dcfc67df83d549ce97ef20.mockapi.io/student',student)
+        console.log(res);
+        if(res.status===201){
+            toast.success("Created Successfully")
+            setTimeout(()=>{
+                navigate('/table')
+            },3000)
+            
+        }
     }
     return (
         <div className='container'>
@@ -59,22 +65,22 @@ function CreateStudent() {
                 
                 <div className='col-6'>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="firstname" aria-describedby="emailHelp" placeholder='First Name' onChange={(e)=>handleChange(e)} />
+                        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder='Name' onChange={(e)=>handleChange(e)} />
                     </div>
                 </div>
                 <div className='col-6'>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="lastname" aria-describedby="emailHelp" placeholder='Last Name' onChange={(e)=>handleChange(e)} />
+                        <input type="text" class="form-control" id="age" aria-describedby="emailHelp" placeholder='Age' onChange={(e)=>handleChange(e)} />
                     </div>
                 </div>
                 <div className='col-6'>
                     <div class="mb-3">
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder='Email' onChange={(e)=>handleChange(e)} required/>
+                        <input type="text" class="form-control" id="roll" aria-describedby="emailHelp" placeholder='Roll' onChange={(e)=>handleChange(e)} required/>
                     </div>
                 </div>
                 <div className='col-6'>
                     <div class="mb-3">
-                        <input type="password" class="form-control" id="password" aria-describedby="emailHelp" placeholder='Password' onChange={(e)=>handleChange(e)}/>
+                        <input type="text" class="form-control" id="place" aria-describedby="emailHelp" placeholder='Place' onChange={(e)=>handleChange(e)}/>
                     </div>
                 </div>
                 
